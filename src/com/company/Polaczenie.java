@@ -7,8 +7,8 @@ public class Polaczenie {
 
     public Polaczenie() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/Biblioteka?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-        String uzytkownik = "krazi225";
-        String haslo = "krazior225";
+        String uzytkownik = "";
+        String haslo = "";
         Connection connection = DriverManager.getConnection(url, uzytkownik, haslo);
         statement = connection.createStatement();
     }
