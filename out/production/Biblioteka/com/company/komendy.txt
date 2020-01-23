@@ -1,0 +1,53 @@
+CREATE DATABASE Biblioteka;
+
+CREATE TABLE Dane (
+id int NOT NULL AUTO_INCREMENT,
+login varchar(20) NOT NULL,
+haslo varchar(32) NOT NULL,
+mode boolean NOT NULL,
+PRIMARY KEY(id));
+
+CREATE TABLE Ksiazki (
+id int NOT NULL AUTO_INCREMENT,
+tytul varchar(50) NOT NULL,
+autor varchar(32) NOT NULL,
+gatunek varchar(20),
+grubosc enum('bardzo krotka', 'krotka', 'srednia', 'dluga', 'bardzo dluga'),
+seria varchar(32),
+l_sztuk int NOT NULL,
+ocena float,
+PRIMARY KEY(id));
+
+CREATE TABLE Historia (
+login varchar(20),
+ksiazka varchar(50),
+wypozyczenie date,
+zwrot date);
+
+CREATE TABLE Lista_wypozyczen (
+id_uzytkownika int,
+id_ksiazki int,
+status enum('zamowiona', 'wypozyczona'),
+wypozyczenie date,
+zwrot date);
+
+CREATE TABLE Uzytkownicy (
+id int NOT NULL AUTO_INCREMENT,
+imie varchar(20),
+nazwisko varchar(32),
+telefon int,
+adres varchar(50),
+status date,
+l_wypozyczen int,
+PRIMARY KEY(id));
+
+INSERT INTO Ksiazki (tytul, autor, l_sztuk)
+VALUES ('Lalka', 'Prus', 16);
+
+INSERT INTO Ksiazki (tytul, autor, l_sztuk)
+VALUES ('Koziolek', 'Matolek', 120);
+
+INSERT INTO dane (login, haslo, mode)
+VALUES('admin', 'haslo1234', TRUE);
+
+
