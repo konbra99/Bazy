@@ -8,20 +8,31 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
 
-public class GlowneOkno extends JFrame {
+public class GlowneOkno {
     private JFrame frame = new JFrame("Biblioteka v2019.22.01");
-    private OknoLogowania log = new OknoLogowania();
-    private Polaczenie polaczenie;
+    private StrategiaDostepu strategia;
+    public static Polaczenie polaczenie;
     DefaultListModel<String> listModel;
+    JList<String> list;
 
+    private void setStrategia(int mode) {
+        if (mode == 0)
+            strategia = new StrategiaUzytkownika();
+        else if (mode == 1)
+            strategia = new StrategiaAdmina();
+        else if (mode == 2)
+            strategia = new StrategiaNiezalogowanego();
+    }
 
-    private void addChangeListener(JTextComponent component, ChangeListener changeListener) {
+    public static void addChangeListener(JTextComponent component, ChangeListener changeListener) {
         Objects.requireNonNull(component);
         Objects.requireNonNull(changeListener);
         DocumentListener dl = new DocumentListener() {
@@ -79,34 +90,58 @@ public class GlowneOkno extends JFrame {
     public GlowneOkno() throws SQLException, InterruptedException {
         polaczenie = new Polaczenie();
 
-
-        Login login = log.okno(polaczenie);
-
-
+        OknoLogowania log = new OknoLogowania();
+        Login login = log.okno();
         if (login == Login.PRZERWANY)
             System.exit(0);
         else if (login == Login.REJESTRACJA)
             System.out.println("rejestracja");
         else if (login == Login.NIEZALOGOWANY)
             System.out.println("niezalogowany");
+        setStrategia(log.getMode());
 
-
+        // deklaracja panelu
         var panel = new JPanel();
         panel.setBackground(Color.BLACK);
-        panel.setLayout(new GridLayout(2, 0));
+        panel.setLayout(new GridLayout(4, 0));
 
+        // deklaracja pola do wyszukiwan
         JTextComponent query = new JTextField();
         addChangeListener(query, e -> poszukiwanie(query));
 
+        // deklaracja przycisku do zamawiania
+        JButton zamow = new JButton("Zamow ksiazke");
+        zamow.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                strategia.zamawiaj(list.getSelectedValue());
+            }
+        });
+
+        // deklaracja przycisku dla okna uzytkownikow
+        JButton uzytkownicy = new JButton("Uzytkownicy");
+        uzytkownicy.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                strategia.uzytkownicy();
+            }
+        });
+
+        // deklaracja scrolla
         listModel = new DefaultListModel<>();
-        JList<String> list = new JList<>(listModel);
+        list = new JList<>(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         list.setLayoutOrientation(JList.VERTICAL);
         list.setVisibleRowCount(-1);
         JScrollPane scrollPane = new JScrollPane(list);
 
-        panel.add(query);
+        // dodanie komponentow do panelu
         panel.add(scrollPane);
+        panel.add(query);
+        panel.add(zamow);
+        panel.add(uzytkownicy);
+
+        // dodanie panelu do ramki
         frame.getContentPane().add(panel, BorderLayout.CENTER);
     }
 
