@@ -50,4 +50,7 @@ VALUES ('Koziolek', 'Matolek', 120);
 INSERT INTO dane (login, haslo, mode)
 VALUES('admin', 'haslo1234', TRUE);
 
+INSERT INTO uzytkownicy (id, imie, nazwisko)
+VALUES('1', 'adminadmin', 'biblioteczny');
+
 
