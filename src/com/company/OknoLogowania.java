@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 enum Login {
@@ -20,6 +21,15 @@ public class OknoLogowania {
     private boolean nie = false;
     private boolean ok = false;
     private boolean klikniety = false;
+    private int id, mode;   // mode == 0 -> uzytkownik, 1 -> admin, 2 -> niezalogowany
+
+    public int getId() {
+        return id;
+    }
+
+    public int getMode() {
+        return mode;
+    }
 
     private void UstawRej() {
         rej = true;
@@ -36,7 +46,7 @@ public class OknoLogowania {
         klikniety = true;
     }
 
-    public Login okno(Polaczenie polaczenie) throws SQLException, InterruptedException {
+    public Login okno() throws SQLException, InterruptedException {
         JTextField login = new JTextField(5);
         JTextField haslo = new JPasswordField(5);
         JButton rejestracja = new JButton("Zaloz konto");
@@ -44,9 +54,6 @@ public class OknoLogowania {
         JButton okej = new JButton("                                         OK                                           ");
 
         var panel = new JPanel();
-        //panel.setBackground(Color.BLACK);
-        //panel.setLayout(new GridLayout(7, 2));
-
 
         rejestracja.addMouseListener(new MouseAdapter() {
             @Override
@@ -90,13 +97,21 @@ public class OknoLogowania {
         frame.setVisible(false);
         if (rej)
             return Login.REJESTRACJA;
-        if (nie)
+        if (nie) {
+            mode = 2;
             return Login.NIEZALOGOWANY;
+        }
         if (ok) {
-            if (polaczenie.zapytanie(new QueryBuilder().logowanie(login.getText(), haslo.getText()).getQuery().toString()).next())
+            ResultSet resultSet = GlowneOkno.polaczenie.zapytanie(new QueryBuilder().logowanie(login.getText(), haslo.getText()).getQuery().toString());
+            if (resultSet.next()) {
+                try {
+                    id = Integer.parseInt(resultSet.getString(1));
+                } catch (NumberFormatException ignored) {}
+                mode = (resultSet.getString(4).equals("1")) ? 1 : 0;
                 return Login.POPRAWNY;
-            else
+            } else {
                 return Login.NIEPOPRAWNY;
+            }
         }
         return Login.POPRAWNY;
     }
