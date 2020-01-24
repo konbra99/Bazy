@@ -6,7 +6,7 @@ public class Polaczenie {
     private Statement statement;
 
     public Polaczenie() throws SQLException {
-        String url = "";
+        String url = "jdbc:mysql://localhost:3306/Biblioteka?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
         String uzytkownik = "";
         String haslo = "";
         Connection connection = DriverManager.getConnection(url, uzytkownik, haslo);
