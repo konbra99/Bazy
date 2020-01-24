@@ -36,9 +36,8 @@ public class QueryBuilder {
     }
 
     public QueryBuilder logowanie(String login, String haslo) {
-        return new QueryBuilder(query.append("SELECT login, haslo FROM Dane WHERE (login = '").append(login).
+        return new QueryBuilder(query.append("SELECT * FROM Dane WHERE (login = '").append(login).
                 append("') AND (haslo = '").append(haslo).append("')"));
     }
 
 }
-
