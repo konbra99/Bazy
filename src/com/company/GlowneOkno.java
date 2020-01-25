@@ -20,6 +20,7 @@ public class GlowneOkno {
     private JFrame frame = new JFrame("Biblioteka v2019.22.01");
     private StrategiaDostepu strategia;
     public static Polaczenie polaczenie;
+    public static Integer id;
     DefaultListModel<String> listModel;
     JList<String> list;
 
@@ -78,10 +79,12 @@ public class GlowneOkno {
     void poszukiwanie(JTextComponent component) {
         try {
             listModel.removeAllElements();
-            ResultSet resultSet = polaczenie.zapytanie(new QueryBuilder().select("tytul").from("Ksiazki").
+            ResultSet resultSet = polaczenie.zapytanie(new QueryBuilder().select("tytul, id, l_sztuk").from("Ksiazki").
                     like("tytul", component.getText()).getQuery().toString());
             while (resultSet.next())
-                listModel.addElement(resultSet.getString("tytul"));
+                listModel.addElement(resultSet.getString("id") + " : "
+                        + resultSet.getString("tytul") + " : "
+                        + resultSet.getString("l_sztuk"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -99,6 +102,7 @@ public class GlowneOkno {
         else if (login == Login.NIEZALOGOWANY)
             System.out.println("niezalogowany");
         setStrategia(log.getMode());
+        id = log.getId();
 
         // deklaracja panelu
         var panel = new JPanel();
