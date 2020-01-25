@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class QueryBuilder {
     private StringBuilder query;
 
@@ -40,4 +42,16 @@ public class QueryBuilder {
                 append("') AND (haslo = '").append(haslo).append("')"));
     }
 
+    public QueryBuilder insert(String tabela, ArrayList<String> kolumny, ArrayList<String> wartosci) {
+        QueryBuilder queryBuilder = new QueryBuilder(query.append("INSERT INTO ").append(tabela).append(" ("));
+        for (int i = 0; i < kolumny.size() - 1; i++)
+            queryBuilder.getQuery().append(kolumny.get(i)).append(", ");
+        queryBuilder.getQuery().append(kolumny.get(kolumny.size() - 1)).append(") VALUES(");
+        for (int i = 0; i < wartosci.size() - 1; i++)
+            queryBuilder.getQuery().append(wartosci.get(i)).append(", ");
+        queryBuilder.getQuery().append(wartosci.get(wartosci.size() - 1)).append(")");
+        return queryBuilder;
+    }
+
 }
+
