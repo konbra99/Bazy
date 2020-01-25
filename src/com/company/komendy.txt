@@ -53,4 +53,26 @@ VALUES('admin', 'haslo1234', TRUE);
 INSERT INTO uzytkownicy (id, imie, nazwisko)
 VALUES('1', 'adminadmin', 'biblioteczny');
 
+DELIMITER //
+CREATE TRIGGER l_zamowien
+BEFORE INSERT ON lista_wypozyczen
+FOR EACH ROW
+BEGIN
+IF ((SELECT COUNT(id_uzytkownika)
+     FROM lista_wypozyczen
+     WHERE (id_uzytkownika = NEW.id_uzytkownika) AND (status = 'zamowiona')) > 2) THEN
+SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nie mozna juz wypozyczyc!';
+END IF;
+END;//
+DELIMITER ;
 
+DELIMITER //
+CREATE TRIGGER zamowienie
+AFTER INSERT ON lista_wypozyczen
+FOR EACH ROW
+BEGIN
+UPDATE Ksiazki
+SET l_sztuk = l_sztuk - 1
+WHERE id = NEW.id_ksiazki;
+END;//
+DELIMITER ;
