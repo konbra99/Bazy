@@ -106,7 +106,8 @@ public class OknoLogowania {
             if (resultSet.next()) {
                 try {
                     id = Integer.parseInt(resultSet.getString(1));
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException ignored) {
+                }
                 mode = (resultSet.getString(4).equals("1")) ? 1 : 0;
                 return Login.POPRAWNY;
             } else {
