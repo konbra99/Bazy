@@ -50,6 +50,9 @@ VALUES ('Koziolek', 'Matolek', 120);
 INSERT INTO dane (login, haslo, mode)
 VALUES('admin', 'haslo1234', TRUE);
 
+INSERT INTO dane (login, haslo, mode)
+VALUES('user', 'haslo', FALSE);
+
 INSERT INTO uzytkownicy (id, imie, nazwisko)
 VALUES('1', 'adminadmin', 'biblioteczny');
 
@@ -76,3 +79,4 @@ SET l_sztuk = l_sztuk - 1
 WHERE id = NEW.id_ksiazki;
 END;//
 DELIMITER ;
+
