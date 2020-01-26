@@ -64,7 +64,6 @@ public class OknoUzytkownikow {
         frame.getContentPane().add(panel, BorderLayout.CENTER);
 
         // wyswietlenie ramki
-        frame.getContentPane().add(panel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setSize(400, 400);
