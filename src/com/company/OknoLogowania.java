@@ -94,6 +94,7 @@ public class OknoLogowania {
 
         while (!klikniety)
             Thread.sleep(100);
+
         frame.setVisible(false);
         if (rej)
             return Login.REJESTRACJA;
