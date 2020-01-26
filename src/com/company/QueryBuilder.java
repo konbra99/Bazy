@@ -53,5 +53,12 @@ public class QueryBuilder {
         return queryBuilder;
     }
 
+    public QueryBuilder update(String tabela, ArrayList<String> ustawienia) {
+        QueryBuilder queryBuilder = new QueryBuilder(query.append("UPDATE ").append(tabela).append(" SET "));
+        for (int i = 0; i < ustawienia.size() - 1; i++)
+            queryBuilder.getQuery().append(ustawienia.get(i)).append(", ");
+        queryBuilder.getQuery().append(ustawienia.get(ustawienia.size() - 1));
+        return queryBuilder;
+    }
 }
 
