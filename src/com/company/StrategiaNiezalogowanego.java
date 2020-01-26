@@ -9,4 +9,9 @@ public class StrategiaNiezalogowanego implements StrategiaDostepu {
     public void uzytkownicy() {
 
     }
+
+    @Override
+    public void start() {
+
+    }
 }
