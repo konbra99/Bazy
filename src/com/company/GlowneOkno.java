@@ -103,6 +103,7 @@ public class GlowneOkno {
             System.out.println("niezalogowany");
         setStrategia(log.getMode());
         id = log.getId();
+        strategia.start();
 
         // deklaracja panelu
         var panel = new JPanel();
@@ -119,6 +120,7 @@ public class GlowneOkno {
             @Override
             public void mousePressed(MouseEvent e) {
                 strategia.zamawiaj(list.getSelectedValue());
+                poszukiwanie(query);
             }
         });
 
@@ -147,6 +149,7 @@ public class GlowneOkno {
 
         // dodanie panelu do ramki
         frame.getContentPane().add(panel, BorderLayout.CENTER);
+        poszukiwanie(query);
     }
 
     public static void main(String[] args) throws SQLException, InterruptedException {
