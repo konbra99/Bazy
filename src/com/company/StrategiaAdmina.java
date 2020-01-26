@@ -29,4 +29,9 @@ public class StrategiaAdmina implements StrategiaDostepu {
     public void uzytkownicy() {
         new OknoUzytkownikow().okno();
     }
+
+    @Override
+    public void start() throws InterruptedException {
+        new OknoZamowien().okno();
+    }
 }
